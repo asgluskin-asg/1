@@ -5,7 +5,7 @@ from deck import (
 from config import (
     ANTE_BONUS, PAIR_PLUS, SIX_CARD_BONUS,
     BET_MIN, BET_MAX, CHIPS, TEXT_BRIGHT, TEXT_GREEN, TEXT_RED, TEXT_DIM,
-    GOLD, AMBER
+    GOLD, AMBER, BET_CIRCLE_R
 )
 import save as save_module
 
@@ -16,11 +16,14 @@ class Game:
     def __init__(self):
         self.chips = save_module.load()
         self.reset_hand()
-        self.active_chip_idx  = 0   # index into CHIPS list
-        self.active_bet_zone  = "ante"
-        self.last_delta       = 0
-        self.payout_lines     = []  # [(text, color), ...]
-        self.dealer_qualified = None
+        self.active_chip_idx    = 0
+        self.active_bet_zone    = "ante"
+        self.last_delta         = 0
+        self.payout_lines       = []
+        self.dealer_qualified   = None
+        self.hand_history       = []   # list of net ints, newest first
+        self.last_bets          = {"ante": 0, "pair_plus": 0, "six_card": 0}
+        self._chips_before_hand = 0
 
     # ── State transitions ─────────────────────────────────────────────────────────
 
@@ -38,6 +41,8 @@ class Game:
     def deal(self):
         if self.bets["ante"] == 0:
             return False
+        self._chips_before_hand = self.chips + sum(self.bets.values())
+        self.last_bets = dict(self.bets)
         self.deck = Deck()
         self.player_cards = self.deck.deal(3)
         self.dealer_cards = self.deck.deal(3)
@@ -69,6 +74,7 @@ class Game:
         self.dealer_face_up = True
         self.last_delta = delta
         self.chips += delta
+        self._record_hand()
         self.payout_lines = lines
         self.state = "PAYOUT" if self.chips > 0 else "GAME_OVER"
         save_module.save(self.chips)
@@ -132,9 +138,16 @@ class Game:
 
         self.last_delta = delta
         self.chips += delta
+        self._record_hand()
         self.payout_lines = lines
         self.state = "PAYOUT" if self.chips > 0 else "GAME_OVER"
         save_module.save(self.chips)
+
+    def _record_hand(self):
+        net = self.chips - self._chips_before_hand
+        self.hand_history.insert(0, net)
+        if len(self.hand_history) > 50:
+            self.hand_history.pop()
 
     # ── Bet helpers ───────────────────────────────────────────────────────────
 
@@ -201,8 +214,23 @@ class Game:
             return [(f"6-Card Bonus — lost  -${self.bets['six_card']}", TEXT_RED)]
         return [(f"6-Card ({hand_display_name(name)} {mult}:1)  +${self.bets['six_card']*mult}", TEXT_GREEN)]
 
+    def rebet(self):
+        if self.state != "BETTING" or self.last_bets["ante"] == 0:
+            return
+        self.clear_bets()
+        for zone, amount in self.last_bets.items():
+            if amount == 0:
+                continue
+            if self.chips < amount:
+                self.clear_bets()
+                return
+            self.bets[zone] = amount
+            self.chips -= amount
+
     def reset_chips(self):
         self.chips = save_module.reset()
+        self.hand_history = []
+        self.last_bets = {"ante": 0, "pair_plus": 0, "six_card": 0}
         self.reset_hand()
 
     # ── Click detection ─────────────────────────────────────────────────────────
@@ -226,6 +254,7 @@ class Game:
             if key == pygame.K_3: self.active_chip_idx = 2
             if key == pygame.K_SPACE and self.bets["ante"] > 0: self.deal()
             if key == pygame.K_c: self.clear_bets()
+            if key == pygame.K_r: self.rebet()
             if key == pygame.K_a:
                 self.active_bet_zone = "ante"
             if key == pygame.K_q:
@@ -246,5 +275,6 @@ class Game:
         elif action == "fold":   self.fold()
         elif action == "play":   self.play()
         elif action == "clear":  self.clear_bets()
+        elif action == "rebet":  self.rebet()
         elif action == "new_hand": self.reset_hand()
         elif action == "reset":  self.reset_chips()

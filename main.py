@@ -15,7 +15,7 @@ from game import Game
 def main():
     pygame.init()
     pygame.display.set_caption(TITLE)
-    screen = pygame.display.set_mode((WINDOW_W, WINDOW_H))
+    screen = pygame.display.set_mode((WINDOW_W, WINDOW_H), pygame.RESIZABLE)
     clock  = pygame.time.Clock()
 
     game = Game()
@@ -50,9 +50,10 @@ def main():
         _last_zones.update(zones)
 
         # Card slot placeholders (always shown)
-        cx = WINDOW_W // 2
-        dealer_y  = 200
-        player_y  = 420
+        W, H = screen.get_size()
+        cx = W // 2
+        dealer_y  = int(H * 0.267)   # ~200 at default 750h
+        player_y  = int(H * 0.560)   # ~420 at default 750h
         spread    = 100
 
         for i in range(3):
@@ -93,12 +94,8 @@ def main():
 
         # Play bet indicator
         if game.play_bet > 0:
-            R.draw_text(screen, f"PLAY  ${game.play_bet}", cx, player_y - 55, 11,
+            R.draw_text(screen, f"PLAY  ${game.play_bet}", cx, player_y - 55, 13,
                         R.AMBER, anchor="center")
-
-        # Payout banner
-        if game.state in ("PAYOUT", "GAME_OVER") and game.payout_lines:
-            R.draw_payout_banner(screen, game.payout_lines)
 
         if game.state == "GAME_OVER":
             R.draw_game_over(screen)
@@ -107,7 +104,10 @@ def main():
         R.draw_bankroll(screen, game.chips, game.last_delta if game.state in ("PAYOUT", "GAME_OVER") else 0)
         R.draw_chip_selector(screen, game.active_chip_idx, game.state)
 
-        buttons = R.draw_buttons(screen, game.state, game.bets["ante"] > 0)
+        R.draw_hand_history(screen, game.hand_history)
+
+        buttons = R.draw_buttons(screen, game.state, game.bets["ante"] > 0,
+                                 has_rebet=game.last_bets["ante"] > 0)
         _last_buttons.clear()
         _last_buttons.extend(buttons)
 
