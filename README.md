@@ -61,6 +61,13 @@ in `public/fonts.css`, so the app has no runtime CDN dependency and renders iden
 
 ## Design reference
 
-`design/` holds the handoff and the canonical prototype the app was built from. The `.dc.html`
-prototype needs the Claude Design runtime to be interactive, but its markup and the `Component`
-class at the bottom read as the specification.
+`design/` holds the handoff and the canonical prototype the app was built from, along with the
+`support.js` runtime and `ios-frame.jsx` they need. Serve that directory over http and open
+`Hang Prototype v2 Gallery Wall.dc.html` to interact with the original:
+
+```bash
+cd design && python3 -m http.server 5300   # then open http://localhost:5300
+```
+
+The runtime pulls React and Babel from unpkg at load, so the prototypes need network access. They
+are reference only — nothing in `src/` depends on them.
