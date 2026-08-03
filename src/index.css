@@ -1,0 +1,89 @@
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #e7e1d6;
+  font-family: 'Instrument Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+input,
+textarea,
+button {
+  font-family: inherit;
+}
+
+input[type='range'] {
+  accent-color: #b45a3c;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+@keyframes hangPop {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes hangRise {
+  from {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Hover affordances the prototype expressed via style-hover. */
+.hang-press {
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.hang-btn-ink:hover {
+  background: #443b32;
+}
+.hang-btn-accent:hover {
+  background: #9c4a2e;
+}
+.hang-ghost:hover {
+  color: #2a241e;
+}
+.hang-pass:hover {
+  border-color: #c98b76;
+  color: #b45a3c;
+}
+.hang-row:hover {
+  border-color: rgba(42, 36, 30, 0.22);
+}
+.hang-dashed:hover {
+  border-color: #b45a3c;
+  color: #b45a3c;
+}
+.hang-close:hover {
+  background: #e6decf;
+}
+.hang-outline:hover {
+  color: #2a241e;
+  border-color: rgba(42, 36, 30, 0.34);
+}
+.hang-link:hover {
+  color: #b45a3c;
+}
+.hang-input:focus {
+  border-color: #b45a3c;
+}
