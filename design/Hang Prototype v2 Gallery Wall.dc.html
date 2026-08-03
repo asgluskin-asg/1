@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400&family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #E7E1D6; }
+  a { color: #B45A3C; text-decoration: none; }
+  a:hover { color: #8E4229; }
+  input, textarea, button { font-family: inherit; }
+  input[type=range] { accent-color: #B45A3C; }
+  ::-webkit-scrollbar { width: 0; height: 0; }
+  @keyframes hangPop { from { transform: scale(0.92); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+  @keyframes hangRise { from { transform: translateY(14px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:44px 20px;background:#E7E1D6;font-family:'Instrument Sans',system-ui,sans-serif">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="position:relative;height:100%;overflow:hidden;background:#F4F0E8;color:#2A241E;font-family:'Instrument Sans',system-ui,sans-serif">
+
+  <!-- ══ ONBOARDING ══ -->
+  <sc-if value="{{ isOnboarding }}" hint-placeholder-val="{{ true }}">
+  <div style="position:absolute;inset:0;background:#F4F0E8;z-index:60;display:flex;flex-direction:column;padding:64px 26px 34px">
+
+    <sc-if value="{{ step0 }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="display:flex;justify-content:center;padding-top:6px">
+        <div style="width:250px;background:#C4AE8C;padding:9px;box-shadow:0 6px 16px rgba(42,36,30,0.12), inset 0 0 0 1px rgba(42,36,30,0.28)">
+          <div style="background:#FBF8F2;padding:26px 20px 18px;box-shadow:inset 0 1px 5px rgba(42,36,30,0.18);display:flex;flex-direction:column;align-items:center;gap:12px">
+            <div style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:52px;line-height:0.85;color:#2A241E">hang</div>
+            <div style="border-top:1px solid rgba(42,36,30,0.16);padding-top:9px;width:70%;text-align:center">
+              <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.22em;color:#8B8175">ARTISTS × DESIGNERS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px;padding-bottom:40px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:44px;line-height:1.02;letter-spacing:-0.02em;text-wrap:pretty">Art for the rooms you're building.</div>
+        <div style="font-size:16px;line-height:1.5;color:#6E645A;max-width:300px;text-wrap:pretty">Swipe through original work from artists who take commissions. When you both say yes, you talk.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div onClick="{{ next }}" style="height:56px;border-radius:28px;background:#2A241E;color:#F7F3EB;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:#443B32">Set up your space</div>
+        <div onClick="{{ skipOnboarding }}" style="height:44px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#8B8175;cursor:pointer" style-hover="color:#2A241E">Just let me look first</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ step1 }}">
+    <div style="flex:1;display:flex;flex-direction:column;overflow:auto">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#9A9084">STEP 1 / 2</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:30px;line-height:1.1;margin-top:10px;letter-spacing:-0.015em">Who's sourcing?</div>
+      <div style="font-size:14px;color:#7A7064;margin-top:8px;line-height:1.45">Artists see this before they match with you.</div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:26px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">STUDIO</div>
+        <input value="{{ studioName }}" onChange="{{ setStudioName }}" style="height:50px;border:1px solid rgba(42,36,30,0.14);border-radius:14px;background:#FBF8F2;padding:0 16px;font-size:16px;color:#2A241E;outline:none" style-focus="border-color:#B45A3C" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">BASED IN</div>
+        <input value="{{ studioCity }}" onChange="{{ setStudioCity }}" style="height:50px;border:1px solid rgba(42,36,30,0.14);border-radius:14px;background:#FBF8F2;padding:0 16px;font-size:16px;color:#2A241E;outline:none" style-focus="border-color:#B45A3C" />
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">YOUR WORK LEANS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ studioStyleChips }}" as="chip" hint-placeholder-count="6">
+            <div onClick="{{ chip.toggle }}" style="min-height:44px;display:flex;align-items:center;padding:0 16px;border-radius:22px;border:1px solid {{ chip.border }};background:{{ chip.bg }};color:{{ chip.fg }};font-size:14px;cursor:pointer">{{ chip.label }}</div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:1;min-height:24px"></div>
+      <div onClick="{{ next }}" style="height:56px;border-radius:28px;background:#2A241E;color:#F7F3EB;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer;margin-top:20px;flex-shrink:0" style-hover="background:#443B32">Next</div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ step2 }}">
+    <div style="flex:1;display:flex;flex-direction:column;overflow:auto">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#9A9084">STEP 2 / 2</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:30px;line-height:1.1;margin-top:10px;letter-spacing:-0.015em">What's the project?</div>
+      <div style="font-size:14px;color:#7A7064;margin-top:8px;line-height:1.45">This travels with every like you send, so artists know what they'd be making.</div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:26px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">BRIEF</div>
+        <textarea value="{{ brief }}" onChange="{{ setBrief }}" style="min-height:104px;border:1px solid rgba(42,36,30,0.14);border-radius:14px;background:#FBF8F2;padding:14px 16px;font-size:15px;line-height:1.45;color:#2A241E;outline:none;resize:none" style-focus="border-color:#B45A3C"></textarea>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">BUDGET PER PIECE</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:500">{{ budgetLabel }}</div>
+        </div>
+        <input type="range" min="500" max="15000" step="500" value="{{ budget }}" onChange="{{ setBudget }}" style="width:100%;height:44px" />
+      </div>
+
+      <div onClick="{{ toggleLicensing }}" style="display:flex;align-items:center;gap:14px;margin-top:14px;min-height:56px;padding:0 16px;border-radius:14px;background:#FBF8F2;border:1px solid rgba(42,36,30,0.10);cursor:pointer">
+        <div style="width:24px;height:24px;border-radius:7px;flex-shrink:0;border:1px solid {{ licBorder }};background:{{ licBg }};color:#F7F3EB;display:flex;align-items:center;justify-content:center;font-size:14px">{{ licMark }}</div>
+        <div style="font-size:15px;line-height:1.35">I need commercial licensing rights</div>
+      </div>
+
+      <div style="flex:1;min-height:24px"></div>
+      <div onClick="{{ finishOnboarding }}" style="height:56px;border-radius:28px;background:#B45A3C;color:#FDF8F3;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer;margin-top:20px;flex-shrink:0" style-hover="background:#9C4A2E">Start browsing</div>
+    </div>
+    </sc-if>
+
+  </div>
+  </sc-if>
+
+  <!-- ══ DISCOVER ══ -->
+  <sc-if value="{{ tabDiscover }}">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding-bottom:82px">
+
+    <div style="padding:60px 20px 0;display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0">
+      <div onClick="{{ openHome }}" style="display:flex;align-items:baseline;gap:10px;cursor:pointer;min-height:44px">
+        <div style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:30px;line-height:0.9;color:#2A241E">hang</div>
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.16em;color:#B45A3C">NEWS</div>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:11px;color:#8B8175;padding-bottom:4px">{{ matchCountLabel }}</div>
+    </div>
+
+    <sc-if value="{{ isTopSheet }}">
+    <div onPointerDown="{{ handleDown }}" onPointerMove="{{ handleMove }}" onPointerUp="{{ handleUp }}" onClick="{{ toggleFilters }}" style="height:48px;margin:6px 20px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:grab;flex-shrink:0;touch-action:none">
+      <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">{{ filterHint }}</div>
+      <div style="width:52px;height:4px;border-radius:2px;background:rgba(42,36,30,0.18)"></div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isChipRow }}">
+    <div style="display:flex;gap:8px;padding:12px 20px 8px;overflow-x:auto;flex-shrink:0">
+      <sc-for list="{{ quickChips }}" as="chip" hint-placeholder-count="4">
+        <div onClick="{{ chip.onClick }}" style="min-height:44px;display:flex;align-items:center;white-space:nowrap;padding:0 15px;border-radius:22px;border:1px solid {{ chip.border }};background:{{ chip.bg }};color:{{ chip.fg }};font-size:13.5px;cursor:pointer;flex-shrink:0">{{ chip.label }}</div>
+      </sc-for>
+    </div>
+    </sc-if>
+
+    <div style="flex:1;position:relative;margin:10px 20px 0">
+      <sc-for list="{{ deck }}" as="c" hint-placeholder-count="3">
+        <div onPointerDown="{{ c.onDown }}" onPointerMove="{{ c.onMove }}" onPointerUp="{{ c.onUp }}" style="position:absolute;left:0;right:0;top:0;bottom:0;border-radius:22px;overflow:hidden;background:#DDD5C7;box-shadow:0 10px 30px rgba(42,36,30,0.16);transform:{{ c.transform }};opacity:{{ c.opacity }};transition:{{ c.transition }};z-index:{{ c.z }};touch-action:none;cursor:grab;user-select:none">
+
+          <div style="position:absolute;inset:0;background:{{ c.piece.bg }}"></div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:0.12em;color:rgba(42,36,30,0.42);text-align:center;line-height:1.7;padding:0 30px;white-space:pre-line">{{ c.piece.slug }}</div>
+          </div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(24,20,16,0.62) 0%, rgba(24,20,16,0.14) 34%, rgba(24,20,16,0) 58%)"></div>
+
+          <div onClick="{{ c.onTapImage }}" style="position:absolute;top:0;left:0;right:0;bottom:120px;cursor:pointer"></div>
+
+          <div style="position:absolute;top:14px;left:14px;right:14px;display:flex;gap:5px">
+            <sc-for list="{{ c.dots }}" as="d" hint-placeholder-count="3">
+              <div style="flex:1;height:3px;border-radius:2px;background:{{ d.bg }}"></div>
+            </sc-for>
+          </div>
+
+          <div style="position:absolute;top:18px;right:16px;padding:7px 12px;border-radius:6px;border:2px solid #6E9A78;color:#DFF0E2;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.1em;transform:rotate(9deg);opacity:{{ c.likeOpacity }};background:rgba(40,80,52,0.42)">YES</div>
+          <div style="position:absolute;top:18px;left:16px;padding:7px 12px;border-radius:6px;border:2px solid #C98B76;color:#FBEAE3;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.1em;transform:rotate(-9deg);opacity:{{ c.passOpacity }};background:rgba(110,50,32,0.42)">NOT NOW</div>
+
+          <div style="position:absolute;left:0;right:0;bottom:0;padding:0 20px 18px;display:flex;flex-direction:column;gap:10px">
+            <sc-if value="{{ showCardName }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:25px;color:#FBF8F2;letter-spacing:-0.01em">{{ c.name }}</div>
+              <div style="font-size:13.5px;color:rgba(251,248,242,0.78)">{{ c.subline }}</div>
+            </div>
+            </sc-if>
+            <sc-if value="{{ showCardDetail }}">
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ c.tags }}" as="t" hint-placeholder-count="3">
+                <div style="padding:5px 10px;border-radius:14px;background:rgba(251,248,242,0.16);border:1px solid rgba(251,248,242,0.24);color:#FBF8F2;font-size:11.5px">{{ t.label }}</div>
+              </sc-for>
+            </div>
+            </sc-if>
+            <div onClick="{{ openProfile }}" style="display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:22px;background:rgba(251,248,242,0.14);border:1px solid rgba(251,248,242,0.22);backdrop-filter:blur(8px);cursor:pointer">
+              <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:0.14em;color:#FBF8F2">↑ PULL UP FOR PORTFOLIO</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ deckEmpty }}">
+      <div style="position:absolute;inset:0;border-radius:22px;border:1px dashed rgba(42,36,30,0.20);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 34px;text-align:center">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:24px;line-height:1.15">{{ emptyTitle }}</div>
+        <div style="font-size:14.5px;color:#7A7064;line-height:1.5;text-wrap:pretty">{{ emptyBody }}</div>
+        <div onClick="{{ resetDeck }}" style="min-height:48px;display:flex;align-items:center;padding:0 22px;border-radius:24px;background:#2A241E;color:#F7F3EB;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px">{{ emptyCta }}</div>
+      </div>
+      </sc-if>
+    </div>
+
+    <div style="height:104px;display:flex;align-items:center;justify-content:center;gap:22px;flex-shrink:0">
+      <div onClick="{{ pass }}" style="width:60px;height:60px;border-radius:30px;background:#FBF8F2;border:1px solid rgba(42,36,30,0.12);box-shadow:0 3px 12px rgba(42,36,30,0.08);display:flex;align-items:center;justify-content:center;font-size:22px;color:#8B8175;cursor:pointer" style-hover="border-color:#C98B76;color:#B45A3C">✕</div>
+      <div onClick="{{ undo }}" style="width:48px;height:48px;border-radius:24px;background:transparent;border:1px solid rgba(42,36,30,0.14);display:flex;align-items:center;justify-content:center;font-size:17px;color:#9A9084;cursor:pointer" style-hover="color:#2A241E;border-color:rgba(42,36,30,0.4)">↺</div>
+      <div onClick="{{ like }}" style="width:60px;height:60px;border-radius:30px;background:#B45A3C;box-shadow:0 4px 16px rgba(180,90,60,0.34);display:flex;align-items:center;justify-content:center;font-size:22px;color:#FDF8F3;cursor:pointer" style-hover="background:#9C4A2E">♥</div>
+    </div>
+
+    <!-- filter top sheet -->
+    <div onClick="{{ closeFilters }}" style="position:absolute;inset:0;background:rgba(24,20,16,0.34);z-index:38;opacity:{{ filterScrimOpacity }};pointer-events:{{ filterScrimEvents }};transition:opacity 240ms ease"></div>
+    <div style="position:absolute;left:0;right:0;top:0;z-index:40;background:#FBF8F2;border-radius:0 0 26px 26px;box-shadow:0 16px 40px rgba(42,36,30,0.22);transform:translateY({{ filterSheetY }});transition:transform 300ms cubic-bezier(0.22,0.9,0.28,1);max-height:84%;display:flex;flex-direction:column">
+      <div style="padding:58px 22px 0;display:flex;align-items:baseline;justify-content:space-between;flex-shrink:0">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:22px">Filters</div>
+        <div onClick="{{ clearFilters }}" style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:0.12em;color:#B45A3C;cursor:pointer;min-height:44px;display:flex;align-items:center">CLEAR ALL</div>
+      </div>
+
+      <div style="flex:1;overflow:auto;padding:6px 22px 0;display:flex;flex-direction:column;gap:22px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">BUDGET PER PIECE · UP TO</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:500">{{ fBudgetLabel }}</div>
+          </div>
+          <input type="range" min="500" max="15000" step="500" value="{{ fBudget }}" onChange="{{ setFBudget }}" style="width:100%;height:44px" />
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">STYLE</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ styleChips }}" as="chip" hint-placeholder-count="8">
+              <div onClick="{{ chip.toggle }}" style="min-height:44px;display:flex;align-items:center;padding:0 15px;border-radius:22px;border:1px solid {{ chip.border }};background:{{ chip.bg }};color:{{ chip.fg }};font-size:14px;cursor:pointer">{{ chip.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">MEDIUM</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ mediumChips }}" as="chip" hint-placeholder-count="6">
+              <div onClick="{{ chip.toggle }}" style="min-height:44px;display:flex;align-items:center;padding:0 15px;border-radius:22px;border:1px solid {{ chip.border }};background:{{ chip.bg }};color:{{ chip.fg }};font-size:14px;cursor:pointer">{{ chip.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">WHERE</div>
+          <div style="display:flex;gap:8px">
+            <sc-for list="{{ locChips }}" as="chip" hint-placeholder-count="3">
+              <div onClick="{{ chip.toggle }}" style="flex:1;min-height:46px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 10px;border-radius:14px;border:1px solid {{ chip.border }};background:{{ chip.bg }};color:{{ chip.fg }};font-size:13.5px;cursor:pointer">{{ chip.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div onClick="{{ toggleFLicensing }}" style="display:flex;align-items:center;gap:14px;min-height:58px;padding:0 16px;border-radius:14px;background:#F4F0E8;border:1px solid rgba(42,36,30,0.10);cursor:pointer;flex-shrink:0">
+          <div style="width:24px;height:24px;border-radius:7px;flex-shrink:0;border:1px solid {{ fLicBorder }};background:{{ fLicBg }};color:#F7F3EB;display:flex;align-items:center;justify-content:center;font-size:14px">{{ fLicMark }}</div>
+          <div style="font-size:15px">Offers commercial licensing</div>
+        </div>
+      </div>
+
+      <div style="padding:14px 22px 22px;flex-shrink:0">
+        <div onClick="{{ closeFilters }}" style="height:54px;border-radius:27px;background:#2A241E;color:#F7F3EB;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:#443B32">{{ applyLabel }}</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══ MATCHES ══ -->
+  <sc-if value="{{ tabMatches }}">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column">
+    <div style="padding:60px 20px 12px;flex-shrink:0">
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:26px;letter-spacing:-0.015em">Matches</div>
+    </div>
+    <div style="flex:1;overflow:auto;padding:0 20px 110px;display:flex;flex-direction:column;gap:26px">
+
+      <sc-if value="{{ hasMatches }}">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">TALKING</div>
+        <sc-for list="{{ matchRows }}" as="m" hint-placeholder-count="2">
+          <div onClick="{{ m.open }}" style="display:flex;align-items:center;gap:14px;padding:12px;border-radius:18px;background:#FBF8F2;border:1px solid rgba(42,36,30,0.08);cursor:pointer" style-hover="border-color:rgba(42,36,30,0.22)">
+            <div style="width:58px;height:58px;flex-shrink:0;background:{{ m.frame }};padding:4px;box-sizing:border-box;box-shadow:inset 0 0 0 0.5px rgba(42,36,30,0.3)"><div style="width:100%;height:100%;background:{{ m.bg }};box-shadow:inset 0 0.5px 2px rgba(42,36,30,0.25)"></div></div>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:17px">{{ m.name }}</div>
+              <div style="font-size:13.5px;color:#7A7064;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ m.preview }}</div>
+            </div>
+            <div style="width:8px;height:8px;border-radius:4px;background:{{ m.unreadBg }};flex-shrink:0"></div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ hasPending }}">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">WAITING ON THEM</div>
+        <sc-for list="{{ pendingRows }}" as="p" hint-placeholder-count="2">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px;border-radius:18px;background:transparent;border:1px dashed rgba(42,36,30,0.16)">
+            <div style="width:58px;height:58px;flex-shrink:0;background:{{ p.frame }};padding:4px;box-sizing:border-box;opacity:0.55;box-shadow:inset 0 0 0 0.5px rgba(42,36,30,0.3)"><div style="width:100%;height:100%;background:{{ p.bg }}"></div></div>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:17px;color:#6E645A">{{ p.name }}</div>
+              <div style="font-size:13px;color:#9A9084">{{ p.preview }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ matchesEmpty }}">
+      <div style="margin-top:70px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:0 24px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:23px;line-height:1.2">Nothing here yet</div>
+        <div style="font-size:14.5px;color:#7A7064;line-height:1.5;text-wrap:pretty">Say yes to work you'd hang, and send a note with it. Artists read your brief before they answer.</div>
+        <div onClick="{{ goDiscover }}" style="min-height:48px;display:flex;align-items:center;padding:0 22px;border-radius:24px;border:1px solid rgba(42,36,30,0.2);font-size:15px;cursor:pointer;margin-top:6px">Back to discover</div>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══ STUDIO ══ -->
+  <sc-if value="{{ tabStudio }}">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column">
+    <div style="padding:60px 20px 12px;flex-shrink:0">
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:26px;letter-spacing:-0.015em">My spaces</div>
+      <div style="font-size:13.5px;color:#7A7064;margin-top:5px">This is what an artist sees when you say yes.</div>
+    </div>
+    <div style="flex:1;overflow:auto;padding:8px 20px 110px;display:flex;flex-direction:column;gap:14px">
+      <div style="background:#33291F;padding:10px;box-shadow:0 8px 20px rgba(42,36,30,0.16), inset 0 0 0 1px rgba(42,36,30,0.3)"><div style="padding:20px;background:#F4EFE6;box-shadow:inset 0 1px 4px rgba(42,36,30,0.14);display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:22px">{{ studioName }}</div>
+        <div style="font-size:14px;color:#7A7064">{{ studioCity }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+          <sc-for list="{{ studioTags }}" as="t" hint-placeholder-count="3">
+            <div style="padding:6px 11px;border-radius:14px;background:#F0EADF;color:#5D544B;font-size:12px">{{ t.label }}</div>
+          </sc-for>
+        </div>
+      </div></div>
+      <div style="background:#C4AE8C;padding:10px;box-shadow:0 8px 20px rgba(42,36,30,0.16), inset 0 0 0 1px rgba(42,36,30,0.28)"><div style="padding:20px;background:#FBF8F2;box-shadow:inset 0 1px 4px rgba(42,36,30,0.14);display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">CURRENT BRIEF</div>
+        <div style="font-size:15.5px;line-height:1.5;text-wrap:pretty">{{ brief }}</div>
+        <div style="height:1px;background:rgba(42,36,30,0.08)"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:14px;color:#7A7064">Budget per piece</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:500">{{ budgetLabel }}</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:14px;color:#7A7064">Commercial licensing</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:500">{{ licensingLabel }}</div>
+        </div>
+      </div></div>
+      <div onClick="{{ restart }}" style="min-height:52px;display:flex;align-items:center;justify-content:center;border-radius:26px;border:1px solid rgba(42,36,30,0.16);font-size:15px;color:#6E645A;cursor:pointer;margin-top:6px" style-hover="color:#2A241E;border-color:rgba(42,36,30,0.34)">Edit brief</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══ TAB BAR ══ -->
+  <sc-if value="{{ showTabs }}">
+  <div style="position:absolute;left:0;right:0;bottom:0;height:82px;z-index:30;background:rgba(244,240,232,0.92);backdrop-filter:blur(14px);border-top:1px solid rgba(42,36,30,0.08);display:flex;align-items:flex-start;padding-top:12px">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+      <div onClick="{{ t.onClick }}" style="flex:1;min-height:48px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:{{ t.weight }};color:{{ t.color }};position:relative">{{ t.label }}<span style="position:absolute;top:-4px;right:-13px;min-width:16px;height:16px;border-radius:8px;background:{{ t.badgeBg }};color:#FDF8F3;font-family:'Space Mono',monospace;font-size:9.5px;display:flex;align-items:center;justify-content:center;padding:0 4px">{{ t.badge }}</span></div>
+        <div style="width:5px;height:5px;border-radius:3px;background:{{ t.dot }}"></div>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- ══ HOME / NEWS ══ -->
+  <sc-if value="{{ homeOpen }}">
+  <div style="position:absolute;inset:0;z-index:55;background:#F4F0E8;display:flex;flex-direction:column;animation:hangRise 280ms cubic-bezier(0.22,0.9,0.28,1) both">
+    <div style="padding:58px 18px 0;display:flex;justify-content:flex-end;flex-shrink:0">
+      <div onClick="{{ closeHome }}" style="width:44px;height:44px;border-radius:22px;background:#EBE4D8;display:flex;align-items:center;justify-content:center;font-size:17px;color:#5D544B;cursor:pointer" style-hover="background:#E0D7C7">✕</div>
+    </div>
+    <div style="flex:1;overflow:auto;padding:6px 24px 40px;display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;justify-content:center;padding-top:2px">
+        <div style="width:230px;background:#C4AE8C;padding:9px;box-shadow:0 6px 16px rgba(42,36,30,0.12), inset 0 0 0 1px rgba(42,36,30,0.28)">
+          <div style="background:#FBF8F2;padding:24px 20px 16px;box-shadow:inset 0 1px 5px rgba(42,36,30,0.18);display:flex;flex-direction:column;align-items:center;gap:11px">
+            <div style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:48px;line-height:0.85;color:#2A241E">hang</div>
+            <div style="border-top:1px solid rgba(42,36,30,0.16);padding-top:8px;width:70%;text-align:center">
+              <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.22em;color:#8B8175">ARTISTS × DESIGNERS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">WHAT'S NEW</div>
+        <sc-for list="{{ homeUpdates }}" as="u" hint-placeholder-count="3">
+          <div style="padding:16px 18px;background:#FBF8F2;border:1px solid rgba(42,36,30,0.08);border-radius:16px;display:flex;flex-direction:column;gap:5px">
+            <div style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#B45A3C">{{ u.date }}</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:16.5px;line-height:1.25">{{ u.title }}</div>
+            <div style="font-size:14px;color:#7A7064;line-height:1.45;text-wrap:pretty">{{ u.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084;margin-bottom:8px">GOOD TO KNOW</div>
+        <sc-for list="{{ homeInfo }}" as="i" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;justify-content:space-between;min-height:52px;border-bottom:1px solid rgba(42,36,30,0.08);cursor:pointer" style-hover="color:#B45A3C">
+            <div style="font-size:15px">{{ i.label }}</div>
+            <div style="font-size:15px;color:#9A9084">›</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.16em;color:#B3A996;text-align:center">HANG · EST. 2026</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══ ARTIST PROFILE SHEET ══ -->
+  <div style="position:absolute;inset:0;z-index:50;background:#FBF8F2;transform:translateY({{ profileY }});transition:transform 340ms cubic-bezier(0.22,0.9,0.28,1);display:flex;flex-direction:column;box-shadow:0 -14px 40px rgba(42,36,30,0.2)">
+    <div style="position:absolute;top:0;left:0;right:0;height:96px;z-index:5;display:flex;align-items:flex-end;justify-content:space-between;padding:0 18px 12px;background:linear-gradient(to bottom,rgba(251,248,242,0.96),rgba(251,248,242,0))">
+      <div onClick="{{ closeProfile }}" style="width:44px;height:44px;border-radius:22px;background:#F0EADF;display:flex;align-items:center;justify-content:center;font-size:17px;color:#5D544B;cursor:pointer" style-hover="background:#E6DECF">✕</div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">{{ profile.medium }}</div>
+    </div>
+
+    <div style="flex:1;overflow:auto;padding:96px 22px 120px;display:flex;flex-direction:column;gap:26px">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:34px;line-height:1.05;letter-spacing:-0.02em">{{ profile.name }}</div>
+        <div style="font-size:14.5px;color:#7A7064">{{ profile.location }}</div>
+      </div>
+
+      <div style="font-size:16px;line-height:1.55;text-wrap:pretty">{{ profile.bio }}</div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084">RECENT WORK</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <sc-for list="{{ profilePieces }}" as="p" hint-placeholder-count="4">
+            <div style="grid-column:{{ p.span }};display:flex;flex-direction:column;gap:8px">
+              <div style="background:{{ p.frame }};padding:9px;box-shadow:0 8px 20px rgba(42,36,30,0.16), inset 0 0 0 1px rgba(42,36,30,0.26)">
+                <div style="background:{{ p.mat }};padding:10px;box-shadow:inset 0 1px 4px rgba(42,36,30,0.16)">
+                  <div style="aspect-ratio:4 / 5;background:{{ p.bg }}"></div>
+                </div>
+              </div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;color:#8B8175;line-height:1.5">{{ p.caption }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#9A9084;margin-bottom:10px">THE PRACTICAL PART</div>
+        <sc-for list="{{ profileFacts }}" as="f" hint-placeholder-count="4">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:18px;padding:13px 0;border-bottom:1px solid rgba(42,36,30,0.08)">
+            <div style="font-size:14px;color:#7A7064;flex-shrink:0">{{ f.label }}</div>
+            <div style="font-size:15px;text-align:right">{{ f.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:7px">
+        <sc-for list="{{ profileTags }}" as="t" hint-placeholder-count="3">
+          <div style="padding:7px 12px;border-radius:16px;background:#F0EADF;color:#5D544B;font-size:12.5px">{{ t.label }}</div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:0;padding:14px 22px 26px;background:linear-gradient(to top,rgba(251,248,242,0.98) 40%,rgba(251,248,242,0));display:flex;gap:12px">
+      <div onClick="{{ passFromProfile }}" style="width:58px;height:58px;border-radius:29px;border:1px solid rgba(42,36,30,0.14);background:#F4F0E8;display:flex;align-items:center;justify-content:center;font-size:20px;color:#8B8175;cursor:pointer;flex-shrink:0" style-hover="color:#B45A3C;border-color:#C98B76">✕</div>
+      <div onClick="{{ likeFromProfile }}" style="flex:1;height:58px;border-radius:29px;background:#B45A3C;color:#FDF8F3;display:flex;align-items:center;justify-content:center;gap:9px;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:#9C4A2E">Yes — reach out</div>
+    </div>
+  </div>
+
+  <!-- ══ NOTE COMPOSER ══ -->
+  <div onClick="{{ dismissNote }}" style="position:absolute;inset:0;z-index:70;background:rgba(24,20,16,0.42);opacity:{{ noteScrimOpacity }};pointer-events:{{ noteEvents }};transition:opacity 220ms ease"></div>
+  <div style="position:absolute;left:0;right:0;bottom:0;z-index:72;background:#FBF8F2;border-radius:26px 26px 0 0;box-shadow:0 -14px 40px rgba(42,36,30,0.24);transform:translateY({{ noteY }});transition:transform 300ms cubic-bezier(0.22,0.9,0.28,1);padding:22px 22px 30px;display:flex;flex-direction:column;gap:16px">
+    <div style="width:44px;height:4px;border-radius:2px;background:rgba(42,36,30,0.16);align-self:center"></div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:23px;line-height:1.15">{{ noteTitle }}</div>
+      <div style="font-size:14px;color:#7A7064;line-height:1.45">Your brief and budget go with it automatically. A line about why their work fits the room helps a lot.</div>
+    </div>
+    <textarea value="{{ noteText }}" onChange="{{ setNoteText }}" placeholder="Something specific about the work…" style="min-height:92px;border:1px solid rgba(42,36,30,0.14);border-radius:14px;background:#F4F0E8;padding:14px;font-size:15px;line-height:1.45;color:#2A241E;outline:none;resize:none" style-focus="border-color:#B45A3C"></textarea>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <sc-for list="{{ noteSuggestions }}" as="s" hint-placeholder-count="2">
+        <div onClick="{{ s.onClick }}" style="min-height:40px;display:flex;align-items:center;padding:0 13px;border-radius:20px;border:1px dashed rgba(42,36,30,0.22);color:#6E645A;font-size:13px;cursor:pointer" style-hover="border-color:#B45A3C;color:#B45A3C">{{ s.label }}</div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:12px">
+      <div onClick="{{ sendLikeOnly }}" style="min-height:54px;display:flex;align-items:center;padding:0 20px;border-radius:27px;border:1px solid rgba(42,36,30,0.16);color:#6E645A;font-size:15px;cursor:pointer">Just the like</div>
+      <div onClick="{{ sendNote }}" style="flex:1;min-height:54px;border-radius:27px;background:#2A241E;color:#F7F3EB;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:#443B32">Send</div>
+    </div>
+  </div>
+
+  <!-- ══ MATCH OVERLAY ══ -->
+  <sc-if value="{{ hasMatchOverlay }}">
+  <div style="position:absolute;inset:0;z-index:80;background:#B45A3C;color:#FDF8F3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:0 34px;text-align:center;animation:hangPop 320ms cubic-bezier(0.22,0.9,0.28,1) both">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.2em;opacity:0.8">IT'S MUTUAL</div>
+    <div style="background:#F4EFE6;padding:8px;box-shadow:0 14px 34px rgba(60,22,10,0.3)"><div style="width:120px;height:150px;background:{{ matchBg }};box-shadow:inset 0 1px 3px rgba(42,36,30,0.3)"></div></div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:32px;line-height:1.1;letter-spacing:-0.015em;animation:hangRise 420ms 120ms both">{{ matchTitle }}</div>
+    <div style="font-size:15.5px;line-height:1.5;opacity:0.88;max-width:270px;text-wrap:pretty">{{ matchBody }}</div>
+    <div style="display:flex;flex-direction:column;gap:10px;width:100%;margin-top:6px">
+      <div onClick="{{ openMatchChat }}" style="height:56px;border-radius:28px;background:#FDF8F3;color:#B45A3C;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer">Open the conversation</div>
+      <div onClick="{{ dismissMatch }}" style="height:48px;display:flex;align-items:center;justify-content:center;font-size:15px;color:rgba(253,248,243,0.82);cursor:pointer">Keep looking</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══ CHAT ══ -->
+  <sc-if value="{{ inChat }}">
+  <div style="position:absolute;inset:0;z-index:90;background:#F4F0E8;display:flex;flex-direction:column">
+    <div style="padding:58px 16px 12px;display:flex;align-items:center;gap:12px;background:rgba(244,240,232,0.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(42,36,30,0.08);flex-shrink:0">
+      <div onClick="{{ closeChat }}" style="width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#5D544B;cursor:pointer;flex-shrink:0">‹</div>
+      <div style="width:38px;height:38px;background:{{ chat.frame }};padding:3px;box-sizing:border-box;flex-shrink:0"><div style="width:100%;height:100%;background:{{ chat.bg }}"></div></div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:17px">{{ chat.name }}</div>
+        <div style="font-size:12px;color:#8B8175">{{ chat.medium }}</div>
+      </div>
+    </div>
+
+    <div style="flex:1;overflow:auto;padding:18px 16px;display:flex;flex-direction:column;gap:10px">
+      <div style="align-self:center;padding:8px 14px;border-radius:14px;background:#EBE4D8;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#8B8175;text-align:center;line-height:1.6;max-width:280px;white-space:pre-line">{{ chat.stamp }}</div>
+      <sc-for list="{{ chatMessages }}" as="m" hint-placeholder-count="3">
+        <div style="max-width:78%;align-self:{{ m.align }};padding:12px 15px;border-radius:{{ m.radius }};background:{{ m.bg }};color:{{ m.fg }};font-size:15px;line-height:1.45">{{ m.text }}</div>
+      </sc-for>
+      <sc-if value="{{ chatTyping }}">
+      <div style="align-self:flex-start;padding:12px 16px;border-radius:18px 18px 18px 5px;background:#FBF8F2;color:#9A9084;font-size:15px">typing…</div>
+      </sc-if>
+    </div>
+
+    <div style="flex-shrink:0;padding:0 16px 8px;display:flex;gap:8px;overflow-x:auto">
+      <sc-for list="{{ chatSuggestions }}" as="s" hint-placeholder-count="2">
+        <div onClick="{{ s.onClick }}" style="min-height:40px;display:flex;align-items:center;white-space:nowrap;padding:0 14px;border-radius:20px;border:1px dashed rgba(42,36,30,0.22);color:#6E645A;font-size:13px;cursor:pointer;flex-shrink:0" style-hover="border-color:#B45A3C;color:#B45A3C">{{ s.label }}</div>
+      </sc-for>
+    </div>
+
+    <div style="flex-shrink:0;padding:8px 16px 30px;display:flex;gap:10px;align-items:flex-end;background:rgba(244,240,232,0.94);border-top:1px solid rgba(42,36,30,0.06)">
+      <input value="{{ chatInput }}" onChange="{{ setChatInput }}" onKeyDown="{{ chatKeyDown }}" placeholder="Message" style="flex:1;height:48px;border:1px solid rgba(42,36,30,0.14);border-radius:24px;background:#FBF8F2;padding:0 18px;font-size:15px;color:#2A241E;outline:none" style-focus="border-color:#B45A3C" />
+      <div onClick="{{ sendChat }}" style="width:48px;height:48px;border-radius:24px;background:#B45A3C;color:#FDF8F3;display:flex;align-items:center;justify-content:center;font-size:19px;cursor:pointer;flex-shrink:0">↑</div>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+</x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 500, &quot;height&quot;: 990 },
+  &quot;cardDensity&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Art only&quot;, &quot;Name + medium&quot;, &quot;Full detail&quot;], &quot;default&quot;: &quot;Name + medium&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Card&quot; },
+  &quot;filterPlacement&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Top sheet&quot;, &quot;Chip row&quot;], &quot;default&quot;: &quot;Top sheet&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Filters&quot; },
+  &quot;startScreen&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Onboarding&quot;, &quot;Discover&quot;], &quot;default&quot;: &quot;Onboarding&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Prototype&quot; }
+}">
+class Component extends DCLogic {
+  ARTISTS = [
+    { id: 'ilse', name: 'Ilse Bräuer', location: 'Berlin · ships worldwide', medium: 'Cyanotype on cotton rag',
+      mediumKey: 'Paper', styles: ['Abstract', 'Minimal'], min: 1200, max: 3000, licensing: true, ships: true, likesBack: true,
+      lead: 8, scale: 'Up to 60 × 90 in',
+      bio: "I print with sunlight, so no two pieces land the same way. Most of my commissions are for spaces that get flat afternoon light and need something to hold the wall without shouting.",
+      tint: ['#8FA3B8', '#7D93AB'],
+      pieces: [
+        { t: 'Tidal Register No. 4', y: '2025', d: '48 × 66 in', tint: ['#8FA3B8', '#7C92AA'] },
+        { t: 'Shore Grid', y: '2024', d: '30 × 40 in', tint: ['#A8B6C4', '#93A4B5'] },
+        { t: 'Nine Days of Cloud', y: '2025', d: '60 × 90 in', tint: ['#7A8CA0', '#6B7D91'] }
+      ],
+      opener: "Thanks for the note — a Sausalito lobby with afternoon light is close to ideal for cyanotype. What's the wall height?",
+      replies: ["Eight weeks is comfortable if we lock the size by the end of the month.", "I can do a set of three that reads as one piece across the wall.", "I'll send dye samples on the cotton rag so you can hold them against your finishes."] },
+
+    { id: 'hollis', name: 'Hollis Beam', location: 'Marfa, TX · ships worldwide', medium: 'Large-format photography',
+      mediumKey: 'Photography', styles: ['Minimal', 'Landscape'], min: 2000, max: 6000, licensing: true, ships: true, likesBack: true,
+      lead: 5, scale: 'Up to 40 × 50 in',
+      bio: "Field cameras, long exposures, mostly high desert. I print archival pigment in editions of seven and I'm happy to shoot something new for a project if the site earns it.",
+      tint: ['#C4B49E', '#B5A48D'],
+      pieces: [
+        { t: 'Presidio, 5:40am', y: '2025', d: '40 × 50 in', tint: ['#C9BAA4', '#B9A992'] },
+        { t: 'Two Fences', y: '2024', d: '30 × 38 in', tint: ['#D2C5B1', '#C0B29C'] },
+        { t: 'Dust Column', y: '2023', d: '24 × 30 in', tint: ['#B3A48F', '#A3947F'] }
+      ],
+      opener: "Read your brief — twelve rooms plus a lobby is a real project. Are you after one series repeated, or something different per room?",
+      replies: ["Editions of seven, so twelve rooms works if we mix two series.", "I could shoot the coastline north of you and keep it in the same register.", "Licensing for print and web is included; I'd want a credit line."] },
+
+    { id: 'nadia', name: 'Nadia Okonjo', location: 'Lagos · ships worldwide', medium: 'Ink and gouache on paper',
+      mediumKey: 'Paper', styles: ['Botanical', 'Pattern'], min: 800, max: 2500, licensing: true, ships: true, likesBack: true,
+      lead: 4, scale: 'Up to 22 × 30 in',
+      bio: "Plants I grew up around, drawn at a scale they never actually reach. Small works, framed close, meant to be looked at from two feet away rather than across a room.",
+      tint: ['#A8B79A', '#95A788'],
+      pieces: [
+        { t: 'Ixora, Fourteen Ways', y: '2025', d: '22 × 30 in', tint: ['#A9B89B', '#96A889'] },
+        { t: 'Night Garden II', y: '2024', d: '18 × 24 in', tint: ['#8D9C81', '#7C8C71'] },
+        { t: 'Cassava Study', y: '2025', d: '16 × 20 in', tint: ['#B7C4A9', '#A4B296'] }
+      ],
+      opener: "Guest rooms are where small work earns its keep. Happy to do a suite of twelve variations so no two rooms repeat.",
+      replies: ["Twelve variations on one plant — same palette, different composition.", "Four weeks per batch of six, framed or unframed.", "I'd want to see your finish samples before I commit to the greens."] },
+
+    { id: 'junko', name: 'Junko Arai', location: 'Kyoto · ships worldwide', medium: 'Hand-thrown ceramic wall relief',
+      mediumKey: 'Ceramic', styles: ['Sculptural', 'Textural'], min: 3000, max: 7000, licensing: false, ships: true, likesBack: false,
+      lead: 14, scale: 'Modular, up to 8 ft wide',
+      bio: "Unglazed stoneware, thrown and cut, hung as modules. The pieces change with the light through the day, which is either the whole point or a problem, depending on the room.",
+      tint: ['#C9BCA9', '#B8AA96'],
+      pieces: [
+        { t: 'Kiln Notes, Set of 9', y: '2025', d: '72 × 40 in', tint: ['#CABDAA', '#B9AB97'] },
+        { t: 'Slip Wall', y: '2024', d: '40 × 40 in', tint: ['#D6CBBA', '#C3B7A4'] },
+        { t: 'Unglazed III', y: '2023', d: '30 × 60 in', tint: ['#BCAE9A', '#AA9C88'] }
+      ],
+      opener: "", replies: [] },
+
+    { id: 'tomas', name: 'Tomás Quiroga', location: 'Mexico City · ships worldwide', medium: 'Oil on linen',
+      mediumKey: 'Painting', styles: ['Figurative', 'Abstract'], min: 4000, max: 9000, licensing: false, ships: true, likesBack: false,
+      lead: 12, scale: 'Up to 78 × 96 in',
+      bio: "Large figures, thin paint, a lot of scraping back. I take two or three commissions a year and I like knowing the room before I start.",
+      tint: ['#B08272', '#9E7160'],
+      pieces: [
+        { t: 'Bañistas', y: '2025', d: '78 × 96 in', tint: ['#B18373', '#9F7261'] },
+        { t: 'Sobremesa', y: '2024', d: '54 × 60 in', tint: ['#C09584', '#AC8271'] },
+        { t: 'Study for a Door', y: '2024', d: '36 × 48 in', tint: ['#9C6F5E', '#8B604F'] }
+      ],
+      opener: "", replies: [] },
+
+    { id: 'marguerite', name: 'Marguerite Sowa', location: 'Lisbon · ships in EU + US', medium: 'Plaster relief and encaustic',
+      mediumKey: 'Mixed', styles: ['Textural', 'Minimal'], min: 2500, max: 5000, licensing: true, ships: true, likesBack: true,
+      lead: 9, scale: 'Up to 48 × 72 in',
+      bio: "Lime plaster, pigment, beeswax — surfaces that look like walls that have been somewhere. Tonal work, almost no colour, built up over weeks.",
+      tint: ['#CFC6B7', '#BEB4A4'],
+      pieces: [
+        { t: 'Rendered No. 12', y: '2025', d: '48 × 72 in', tint: ['#D0C7B8', '#BFB5A5'] },
+        { t: 'Wax Field', y: '2024', d: '36 × 36 in', tint: ['#C4B9A8', '#B2A796'] },
+        { t: 'Two Repairs', y: '2025', d: '24 × 48 in', tint: ['#DAD2C4', '#C7BEAF'] }
+      ],
+      opener: "A calm coastal palette is basically what I already work in. Tell me about the plaster or paint you're specifying and I'll pitch tones against it.",
+      replies: ["Nine weeks for a 48 × 72, less if we go smaller.", "I'd keep it tonal — one warm grey, one bone.", "Encaustic doesn't love direct sun. Where does the light come from?"] },
+
+    { id: 'dev', name: 'Dev Raghunathan', location: 'Chennai · ships worldwide', medium: 'Screenprint editions',
+      mediumKey: 'Print', styles: ['Geometric', 'Pattern'], min: 400, max: 1200, licensing: true, ships: true, likesBack: true,
+      lead: 3, scale: 'Up to 28 × 40 in',
+      bio: "Hand-pulled prints, four to six colours, mostly built from temple floor patterns. Editions are large enough that a whole floor of rooms is easy to fill.",
+      tint: ['#C79A6E', '#B4885D'],
+      pieces: [
+        { t: 'Kolam Set A', y: '2025', d: '28 × 40 in', tint: ['#C89B6F', '#B5895E'] },
+        { t: 'Six Colour Repeat', y: '2024', d: '20 × 28 in', tint: ['#D5AC83', '#C29A71'] },
+        { t: 'Threshold', y: '2025', d: '24 × 24 in', tint: ['#B58A62', '#A37851'] }
+      ],
+      opener: "Twelve rooms is a nice run — I can do three designs, four rooms each, all in the same ink set. Three weeks.",
+      replies: ["Three weeks for the full run, framed adds two.", "Commercial licensing is fine, I'll send the agreement.", "Want me to pull a test in your colourway first?"] },
+
+    { id: 'elsie', name: 'Elsie Warr', location: 'Glasgow · ships worldwide', medium: 'Woven tapestry, natural dye',
+      mediumKey: 'Textile', styles: ['Textile', 'Textural'], min: 5000, max: 12000, licensing: false, ships: true, likesBack: false,
+      lead: 20, scale: 'Up to 9 × 12 ft',
+      bio: "Floor loom, wool and linen, dyed with what grows near the studio. A large piece takes months, and it will absorb a room's noise as much as decorate it.",
+      tint: ['#A9A08C', '#98907C'],
+      pieces: [
+        { t: 'Long Weather', y: '2024', d: '108 × 144 in', tint: ['#AAA18D', '#99917D'] },
+        { t: 'Madder Ground', y: '2025', d: '60 × 84 in', tint: ['#B8A895', '#A69682'] },
+        { t: 'Small Fell', y: '2023', d: '36 × 48 in', tint: ['#9A9280', '#89816F'] }
+      ],
+      opener: "", replies: [] }
+  ];
+
+  FRAMES = [['#C4AE8C', '#FBF8F2'], ['#33291F', '#F4EFE6'], ['#B08D57', '#FBF8F2'], ['#E9E2D4', '#FFFFFF'], ['#6B4E37', '#F4EFE6']];
+  frameFor(id) { const i = Math.max(0, this.ARTISTS.findIndex(a => a.id === id)); return this.FRAMES[i % this.FRAMES.length]; }
+
+  STYLES = ['Abstract', 'Figurative', 'Minimal', 'Botanical', 'Textural', 'Sculptural', 'Geometric', 'Textile', 'Landscape', 'Pattern'];
+  MEDIUMS = ['Painting', 'Photography', 'Print', 'Paper', 'Ceramic', 'Textile', 'Mixed'];
+
+  state = {
+    onboarding: true,
+    step: 0,
+    tab: 'discover',
+    seen: [],
+    lastAction: null,
+    pieceIdx: {},
+    drag: null,
+    fly: null,
+    filtersOpen: false,
+    homeOpen: false,
+    filterDrag: null,
+    filters: { budget: 15000, styles: [], mediums: [], loc: 'any', licensing: false },
+    studioName: 'Studio Verity',
+    studioCity: 'Oakland, California',
+    studioStyles: ['Minimal', 'Textural'],
+    brief: 'Boutique hotel in Sausalito — lobby plus twelve guest rooms. Warm, coastal, quiet. Looking for one anchor piece and a series that can repeat without feeling repeated.',
+    budget: 6000,
+    licensing: true,
+    profileOpen: false,
+    profileFor: null,
+    noteFor: null,
+    noteText: '',
+    likesSent: [],
+    matches: [],
+    threads: {},
+    matchOverlay: null,
+    chatWith: null,
+    chatInput: '',
+    chatTyping: false,
+    unread: {}
+  };
+
+  componentDidMount() {
+    if ((this.props.startScreen || 'Onboarding') === 'Discover') this.setState({ onboarding: false });
+  }
+
+  // ── helpers ──
+  money(n) { return n >= 1000 ? '$' + (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1) + 'k' : '$' + n; }
+  bg(tint, angle) { return 'repeating-linear-gradient(' + angle + 'deg, ' + tint[0] + ' 0 9px, ' + tint[1] + ' 9px 18px)'; }
+  artist(id) { return this.ARTISTS.find(a => a.id === id); }
+
+  filtered() {
+    const f = this.state.filters;
+    return this.ARTISTS.filter(a => {
+      if (a.min > f.budget) return false;
+      if (f.styles.length && !a.styles.some(s => f.styles.includes(s))) return false;
+      if (f.mediums.length && !f.mediums.includes(a.mediumKey)) return false;
+      if (f.licensing && !a.licensing) return false;
+      if (f.loc === 'ships' && !a.ships) return false;
+      if (f.loc === 'us' && !/TX|California|Oakland/.test(a.location)) return false;
+      return true;
+    });
+  }
+  available() { return this.filtered().filter(a => !this.state.seen.includes(a.id)); }
+  piece(a) { const i = (this.state.pieceIdx[a.id] || 0) % a.pieces.length; return a.pieces[i]; }
+
+  chip(label, active, on) {
+    return { label, toggle: on, onClick: on,
+      bg: active ? '#2A241E' : 'transparent',
+      fg: active ? '#F7F3EB' : '#5D544B',
+      border: active ? '#2A241E' : 'rgba(42,36,30,0.18)' };
+  }
+  toggleIn(arr, v) { return arr.includes(v) ? arr.filter(x => x !== v) : arr.concat([v]); }
+
+  // ── swipe ──
+  down = (e) => {
+    if (this.state.fly) return;
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+    this.setState({ drag: { x0: e.clientX, y0: e.clientY, dx: 0, dy: 0, moved: false } });
+  };
+  move = (e) => {
+    const d = this.state.drag; if (!d) return;
+    const dx = e.clientX - d.x0, dy = e.clientY - d.y0;
+    const moved = d.moved || Math.abs(dx) > 7 || Math.abs(dy) > 7;
+    this.setState({ drag: { ...d, dx, dy, moved } });
+  };
+  up = () => {
+    const d = this.state.drag; if (!d) return;
+    this.setState({ drag: null });
+    if (!d.moved) return;
+    if (d.dy < -100 && Math.abs(d.dx) < 80) return this.openProfile();
+    if (d.dx > 95) return this.like();
+    if (d.dx < -95) return this.pass();
+  };
+
+  commit(dir, id) {
+    this.setState({ fly: { id, dir } });
+    setTimeout(() => this.setState(s => ({
+      fly: null, drag: null,
+      seen: s.seen.concat([id]),
+      lastAction: { id, dir }
+    })), 250);
+  }
+
+  pass = () => { const a = this.available()[0]; if (!a || this.state.fly) return; this.setState({ profileOpen: false }); this.commit(-1, a.id); };
+  like = () => {
+    const a = this.available()[0]; if (!a || this.state.fly) return;
+    this.setState({ profileOpen: false, noteFor: a.id, noteText: '' });
+  };
+  undo = () => {
+    const la = this.state.lastAction; if (!la) return;
+    this.setState(s => ({ seen: s.seen.filter(x => x !== la.id), lastAction: null }));
+  };
+  resetDeck = () => {
+    const f = this.state.filters;
+    const anyFilter = f.budget < 15000 || f.styles.length || f.mediums.length || f.licensing || f.loc !== 'any';
+    if (anyFilter) this.setState({ filters: { budget: 15000, styles: [], mediums: [], loc: 'any', licensing: false }, filtersOpen: false });
+    else this.setState({ seen: [], lastAction: null });
+  };
+
+  openProfile = () => { const a = this.available()[0]; if (a) this.setState({ profileOpen: true, profileFor: a.id }); };
+  closeProfile = () => this.setState({ profileOpen: false });
+
+  // ── note + match ──
+  dismissNote = () => this.setState({ noteFor: null });
+  finishLike(note) {
+    const id = this.state.noteFor; const a = this.artist(id);
+    this.setState({ noteFor: null, noteText: '', likesSent: this.state.likesSent.concat([{ id, note }]) });
+    this.commit(1, id);
+    if (a.likesBack) {
+      setTimeout(() => {
+        this.setState(s => ({
+          matchOverlay: id,
+          matches: s.matches.concat([id]),
+          unread: { ...s.unread, [id]: true },
+          threads: { ...s.threads, [id]: [{ from: 'them', text: a.opener }] }
+        }));
+      }, 1400);
+    }
+  }
+  sendNote = () => this.finishLike(this.state.noteText);
+  sendLikeOnly = () => this.finishLike('');
+  dismissMatch = () => this.setState({ matchOverlay: null });
+  openMatchChat = () => this.setState(s => ({ chatWith: s.matchOverlay, matchOverlay: null, tab: 'matches', unread: { ...s.unread, [s.matchOverlay]: false } }));
+
+  // ── chat ──
+  closeChat = () => this.setState({ chatWith: null, chatInput: '' });
+  pushChat(text) {
+    const id = this.state.chatWith; const a = this.artist(id);
+    const thread = (this.state.threads[id] || []).concat([{ from: 'me', text }]);
+    this.setState(s => ({ threads: { ...s.threads, [id]: thread }, chatInput: '', chatTyping: true }));
+    const n = thread.filter(m => m.from === 'me').length - 1;
+    const reply = a.replies[n % a.replies.length];
+    setTimeout(() => this.setState(s => ({
+      chatTyping: false,
+      threads: { ...s.threads, [id]: (s.threads[id] || []).concat([{ from: 'them', text: reply }]) }
+    })), 1100);
+  }
+  sendChat = () => { const t = (this.state.chatInput || '').trim(); if (t) this.pushChat(t); };
+
+  renderVals() {
+    const s = this.state;
+    const density = this.props.cardDensity || 'Name + medium';
+    const placement = this.props.filterPlacement || 'Top sheet';
+    const avail = this.available();
+    const f = s.filters;
+
+    // deck cards
+    const deck = avail.slice(0, 3).map((a, i) => {
+      const flying = s.fly && s.fly.id === a.id;
+      const d = i === 0 ? s.drag : null;
+      const dx = d ? d.dx : 0, dy = d ? d.dy : 0;
+      let transform, transition = 'transform 300ms cubic-bezier(0.22,0.9,0.28,1), opacity 240ms ease', opacity = 1;
+      if (i === 0 && flying) {
+        transform = 'translate(' + (s.fly.dir * 560) + 'px, -40px) rotate(' + (s.fly.dir * 20) + 'deg)';
+        transition = 'transform 250ms ease-out, opacity 250ms ease-out'; opacity = 0;
+      } else if (i === 0) {
+        transform = 'translate(' + dx + 'px, ' + dy + 'px) rotate(' + (dx / 20) + 'deg)';
+        if (d && d.moved) transition = 'none';
+      } else {
+        transform = 'scale(' + (1 - i * 0.045) + ') translateY(' + (i * 15) + 'px)';
+      }
+      const pi = (s.pieceIdx[a.id] || 0) % a.pieces.length;
+      const p = a.pieces[pi];
+      return {
+        id: a.id, name: a.name, transform, transition, opacity, z: 10 - i,
+        subline: a.medium + ' · ' + this.money(a.min) + '–' + this.money(a.max),
+        tags: [{ label: a.styles[0] }, { label: a.location.split(' · ')[0] }, { label: a.licensing ? 'Licensing ok' : 'Original only' }],
+        piece: { bg: this.bg(p.tint, 38 + pi * 14), slug: 'DROP ARTWORK · ' + p.d.toUpperCase() + '\n' + p.t.toUpperCase() + ', ' + p.y },
+        dots: a.pieces.map((_, k) => ({ bg: k === pi ? 'rgba(251,248,242,0.95)' : 'rgba(251,248,242,0.32)' })),
+        likeOpacity: i === 0 ? Math.min(1, Math.max(0, dx / 90)) : 0,
+        passOpacity: i === 0 ? Math.min(1, Math.max(0, -dx / 90)) : 0,
+        onDown: i === 0 ? this.down : undefined,
+        onMove: i === 0 ? this.move : undefined,
+        onUp: i === 0 ? this.up : undefined,
+        onTapImage: i === 0 ? (() => {
+          if (s.drag && s.drag.moved) return;
+          this.setState(st => ({ pieceIdx: { ...st.pieceIdx, [a.id]: (st.pieceIdx[a.id] || 0) + 1 } }));
+        }) : undefined
+      };
+    });
+
+    const anyFilter = f.budget < 15000 || f.styles.length || f.mediums.length || f.licensing || f.loc !== 'any';
+    const prof = this.artist(s.profileFor) || this.ARTISTS[0];
+    const chatA = this.artist(s.chatWith) || this.ARTISTS[0];
+    const thread = s.threads[s.chatWith] || [];
+    const mo = this.artist(s.matchOverlay);
+    const pendingIds = s.likesSent.map(l => l.id).filter(id => !s.matches.includes(id));
+
+    return {
+      // onboarding
+      isOnboarding: s.onboarding,
+      step0: s.onboarding && s.step === 0,
+      step1: s.onboarding && s.step === 1,
+      step2: s.onboarding && s.step === 2,
+      next: () => this.setState({ step: s.step + 1 }),
+      skipOnboarding: () => this.setState({ onboarding: false }),
+      finishOnboarding: () => this.setState({ onboarding: false, step: 0 }),
+      restart: () => this.setState({ onboarding: true, step: 1 }),
+      studioName: s.studioName,
+      studioCity: s.studioCity,
+      setStudioName: e => this.setState({ studioName: e.target.value }),
+      setStudioCity: e => this.setState({ studioCity: e.target.value }),
+      studioStyleChips: this.STYLES.slice(0, 8).map(v => this.chip(v, s.studioStyles.includes(v), () => this.setState({ studioStyles: this.toggleIn(s.studioStyles, v) }))),
+      studioTags: s.studioStyles.map(v => ({ label: v })).concat([{ label: this.money(s.budget) + ' per piece' }, { label: s.licensing ? 'Needs licensing' : 'Originals fine' }]),
+      brief: s.brief,
+      setBrief: e => this.setState({ brief: e.target.value }),
+      budget: s.budget,
+      budgetLabel: 'up to ' + this.money(s.budget),
+      setBudget: e => this.setState({ budget: +e.target.value }),
+      toggleLicensing: () => this.setState({ licensing: !s.licensing }),
+      licMark: s.licensing ? '✓' : '',
+      licBg: s.licensing ? '#B45A3C' : 'transparent',
+      licBorder: s.licensing ? '#B45A3C' : 'rgba(42,36,30,0.28)',
+      licensingLabel: s.licensing ? 'Required' : 'Not needed',
+
+      // tabs
+      tabDiscover: !s.onboarding && s.tab === 'discover',
+      tabMatches: !s.onboarding && s.tab === 'matches',
+      tabStudio: !s.onboarding && s.tab === 'studio',
+      showTabs: !s.onboarding && !s.chatWith,
+      goDiscover: () => this.setState({ tab: 'discover' }),
+      tabs: [
+        { key: 'discover', label: 'Discover' },
+        { key: 'matches', label: 'Matches' },
+        { key: 'studio', label: 'Spaces' }
+      ].map(t => {
+        const active = s.tab === t.key;
+        const badge = t.key === 'matches' ? Object.keys(s.unread).filter(k => s.unread[k]).length : 0;
+        return { label: t.label, weight: active ? 500 : 400,
+          color: active ? '#2A241E' : '#9A9084',
+          dot: active ? '#B45A3C' : 'transparent',
+          badge: badge ? String(badge) : '',
+          badgeBg: badge ? '#B45A3C' : 'transparent',
+          onClick: () => this.setState({ tab: t.key }) };
+      }),
+
+      // home / news
+      homeOpen: s.homeOpen,
+      openHome: () => this.setState({ homeOpen: true }),
+      closeHome: () => this.setState({ homeOpen: false }),
+      homeUpdates: [
+        { date: 'THIS WEEK', title: 'Six new artists joined', body: 'A ceramics and textile lean this round — two work at architectural scale.' },
+        { date: 'JUL 2026', title: 'Briefs now travel with every like', body: 'Artists see your brief, budget, and licensing needs before they answer. Fewer dead-end matches.' },
+        { date: 'COMING SOON', title: 'My studio — the artist side', body: 'Artists get their own home for portfolios, availability, and commission terms.' }
+      ],
+      homeInfo: [
+        { label: 'How matching works' },
+        { label: 'Commissioning and licensing guide' },
+        { label: 'Suggest an artist' },
+        { label: 'Contact us' }
+      ],
+
+      // deck
+      deck,
+      deckEmpty: avail.length === 0,
+      emptyTitle: anyFilter ? 'Nothing left under these filters' : "That's everyone, for now",
+      emptyBody: anyFilter
+        ? 'Widen the budget or drop a style and there will be more to look at.'
+        : 'New artists join weekly. Meanwhile, the ones you liked are in Matches.',
+      emptyCta: anyFilter ? 'Reset filters' : 'Start over',
+      resetDeck: this.resetDeck,
+      matchCountLabel: avail.length + ' of ' + this.ARTISTS.length + ' artists',
+      pass: this.pass, like: this.like, undo: this.undo,
+      showCardName: density !== 'Art only',
+      showCardDetail: density === 'Full detail',
+
+      // filters
+      isTopSheet: placement === 'Top sheet',
+      isChipRow: placement === 'Chip row',
+      filterHint: anyFilter ? 'PULL DOWN · FILTERS ON' : 'PULL DOWN FOR FILTERS',
+      toggleFilters: () => this.setState({ filtersOpen: !s.filtersOpen }),
+      closeFilters: () => this.setState({ filtersOpen: false }),
+      clearFilters: () => this.setState({ filters: { budget: 15000, styles: [], mediums: [], loc: 'any', licensing: false } }),
+      filterSheetY: s.filtersOpen ? '0%' : '-102%',
+      filterScrimOpacity: s.filtersOpen ? 1 : 0,
+      filterScrimEvents: s.filtersOpen ? 'auto' : 'none',
+      applyLabel: 'Show ' + this.available().length + ' artists',
+      handleDown: e => { try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {} this.setState({ filterDrag: e.clientY }); },
+      handleMove: e => { if (s.filterDrag != null && e.clientY - s.filterDrag > 34) this.setState({ filtersOpen: true, filterDrag: null }); },
+      handleUp: () => this.setState({ filterDrag: null }),
+      fBudget: f.budget,
+      fBudgetLabel: f.budget >= 15000 ? 'any' : this.money(f.budget),
+      setFBudget: e => this.setState({ filters: { ...f, budget: +e.target.value } }),
+      styleChips: this.STYLES.map(v => this.chip(v, f.styles.includes(v), () => this.setState({ filters: { ...f, styles: this.toggleIn(f.styles, v) } }))),
+      mediumChips: this.MEDIUMS.map(v => this.chip(v, f.mediums.includes(v), () => this.setState({ filters: { ...f, mediums: this.toggleIn(f.mediums, v) } }))),
+      locChips: [{ k: 'any', l: 'Anywhere' }, { k: 'ships', l: 'Ships to me' }, { k: 'us', l: 'US only' }]
+        .map(o => this.chip(o.l, f.loc === o.k, () => this.setState({ filters: { ...f, loc: o.k } }))),
+      toggleFLicensing: () => this.setState({ filters: { ...f, licensing: !f.licensing } }),
+      fLicMark: f.licensing ? '✓' : '',
+      fLicBg: f.licensing ? '#B45A3C' : 'transparent',
+      fLicBorder: f.licensing ? '#B45A3C' : 'rgba(42,36,30,0.28)',
+      quickChips: [
+        this.chip(f.budget >= 15000 ? 'Any budget' : 'Under ' + this.money(f.budget), f.budget < 15000, () => this.setState({ filters: { ...f, budget: f.budget >= 15000 ? 3000 : 15000 } })),
+        this.chip('Minimal', f.styles.includes('Minimal'), () => this.setState({ filters: { ...f, styles: this.toggleIn(f.styles, 'Minimal') } })),
+        this.chip('Textural', f.styles.includes('Textural'), () => this.setState({ filters: { ...f, styles: this.toggleIn(f.styles, 'Textural') } })),
+        this.chip('Photography', f.mediums.includes('Photography'), () => this.setState({ filters: { ...f, mediums: this.toggleIn(f.mediums, 'Photography') } })),
+        this.chip('Licensing', f.licensing, () => this.setState({ filters: { ...f, licensing: !f.licensing } }))
+      ],
+
+      // profile sheet
+      profileY: s.profileOpen ? '0%' : '101%',
+      openProfile: this.openProfile,
+      closeProfile: this.closeProfile,
+      passFromProfile: this.pass,
+      likeFromProfile: this.like,
+      profile: { name: prof.name, location: prof.location, medium: prof.medium.toUpperCase(), bio: prof.bio },
+      profilePieces: prof.pieces.map((p, i) => {
+        const fr = this.FRAMES[(Math.max(0, this.ARTISTS.indexOf(prof)) + i) % this.FRAMES.length];
+        return {
+          bg: this.bg(p.tint, 38 + i * 14),
+          caption: p.t + ', ' + p.y + ' · ' + p.d,
+          span: i === 0 ? 'span 2' : 'auto',
+          frame: fr[0], mat: fr[1]
+        };
+      }),
+      profileFacts: [
+        { label: 'Commission range', value: this.money(prof.min) + ' – ' + this.money(prof.max) },
+        { label: 'Lead time', value: prof.lead + ' weeks' },
+        { label: 'Largest work', value: prof.scale },
+        { label: 'Commercial licensing', value: prof.licensing ? 'Available' : 'Originals only' }
+      ],
+      profileTags: prof.styles.map(v => ({ label: v })).concat([{ label: prof.mediumKey }]),
+
+      // note composer
+      noteY: s.noteFor ? '0%' : '104%',
+      noteScrimOpacity: s.noteFor ? 1 : 0,
+      noteEvents: s.noteFor ? 'auto' : 'none',
+      noteTitle: s.noteFor ? 'Say something to ' + this.artist(s.noteFor).name.split(' ')[0] : 'Say something',
+      noteText: s.noteText,
+      setNoteText: e => this.setState({ noteText: e.target.value }),
+      noteSuggestions: [
+        { label: 'The scale is right for our lobby', onClick: () => this.setState({ noteText: 'The scale of your recent work is right for our lobby wall — could you take a commission this autumn?' }) },
+        { label: 'Twelve rooms, one series', onClick: () => this.setState({ noteText: 'We need twelve guest rooms to feel related but not identical. Could you do a series?' }) }
+      ],
+      sendNote: this.sendNote,
+      sendLikeOnly: this.sendLikeOnly,
+      dismissNote: this.dismissNote,
+
+      // match overlay
+      hasMatchOverlay: !!s.matchOverlay,
+      matchTitle: mo ? mo.name.split(' ')[0] + ' wants to talk' : '',
+      matchBody: mo ? 'They read your brief and said yes. Chat is open — theirs to lose now.' : '',
+      matchBg: mo ? this.bg(mo.pieces[0].tint, 38) : 'transparent',
+      openMatchChat: this.openMatchChat,
+      dismissMatch: this.dismissMatch,
+
+      // matches list
+      hasMatches: s.matches.length > 0,
+      hasPending: pendingIds.length > 0,
+      matchesEmpty: s.matches.length === 0 && pendingIds.length === 0,
+      matchRows: s.matches.map(id => {
+        const a = this.artist(id); const t = s.threads[id] || [];
+        return { name: a.name, bg: this.bg(a.pieces[0].tint, 38), frame: this.frameFor(id)[0],
+          preview: t.length ? t[t.length - 1].text : '',
+          unreadBg: s.unread[id] ? '#B45A3C' : 'transparent',
+          open: () => this.setState(st => ({ chatWith: id, unread: { ...st.unread, [id]: false } })) };
+      }),
+      pendingRows: pendingIds.map(id => {
+        const a = this.artist(id);
+        return { name: a.name, bg: this.bg(a.pieces[0].tint, 38), frame: this.frameFor(id)[0], preview: 'Liked · they have your brief' };
+      }),
+
+      // chat
+      inChat: !!s.chatWith,
+      chat: { name: chatA.name, medium: chatA.medium, bg: this.bg(chatA.pieces[0].tint, 38), frame: this.frameFor(chatA.id)[0],
+        stamp: 'You matched with ' + chatA.name.split(' ')[0] + '\nyour brief and budget were shared' },
+      chatMessages: thread.map(m => ({
+        text: m.text,
+        align: m.from === 'me' ? 'flex-end' : 'flex-start',
+        radius: m.from === 'me' ? '18px 18px 5px 18px' : '18px 18px 18px 5px',
+        bg: m.from === 'me' ? '#2A241E' : '#FBF8F2',
+        fg: m.from === 'me' ? '#F7F3EB' : '#2A241E'
+      })),
+      chatTyping: s.chatTyping,
+      chatSuggestions: ['Can you hold autumn?', 'What does framing add?', 'Sending the moodboard'].map(l => ({ label: l, onClick: () => this.pushChat(l) })),
+      chatInput: s.chatInput,
+      setChatInput: e => this.setState({ chatInput: e.target.value }),
+      chatKeyDown: e => { if (e.key === 'Enter') this.sendChat(); },
+      sendChat: this.sendChat,
+      closeChat: this.closeChat
+    };
+  }
+}
+</script>
+</body>
+</html>
